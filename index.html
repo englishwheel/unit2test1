@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 Travel B2 — Автопроверка</title>
+<style>
+  :root{
+    --bg:#f4f7fb; --card:#fff; --primary:#2563eb; --primary-dark:#1e40af;
+    --ok:#16a34a; --bad:#dc2626; --border:#e2e8f0; --text:#1e293b; --muted:#64748b;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.55;
+  }
+  header{
+    background:linear-gradient(135deg,#2563eb,#1e40af);
+    color:#fff; padding:32px 20px; text-align:center;
+  }
+  header h1{margin:0 0 8px; font-size:1.7rem}
+  header p{margin:0; opacity:.9}
+  main{max-width:900px; margin:0 auto; padding:24px 16px 60px}
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:22px 20px; margin-bottom:22px; box-shadow:0 4px 14px rgba(0,0,0,.04);
+  }
+  .card h2{
+    margin:0 0 6px; font-size:1.15rem; color:var(--primary-dark);
+    display:flex; align-items:center; gap:8px;
+  }
+  .card h2 .num{
+    background:var(--primary); color:#fff; width:26px; height:26px;
+    border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+    font-size:.85rem; flex-shrink:0;
+  }
+  .hint{color:var(--muted); font-size:.9rem; margin:0 0 16px}
+  .q{margin-bottom:16px}
+  .q .prompt{margin-bottom:8px}
+  .q .prompt b{color:var(--primary-dark)}
+  .options{display:flex; flex-wrap:wrap; gap:8px}
+  .options label{
+    display:inline-flex; align-items:center; gap:6px;
+    border:1px solid var(--border); border-radius:8px; padding:6px 12px;
+    cursor:pointer; background:#f8fafc; transition:.15s;
+  }
+  .options label:hover{border-color:var(--primary); background:#eff6ff}
+  .options input{accent-color:var(--primary)}
+  select, input[type="text"]{
+    font:inherit; padding:8px 10px; border:1px solid var(--border);
+    border-radius:8px; background:#f8fafc; min-width:200px; max-width:100%;
+  }
+  input[type="text"]{min-width:240px}
+  select:focus, input[type="text"]:focus{outline:2px solid #bfdbfe; border-color:var(--primary)}
+  .match-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px}
+  .match-row .term{font-weight:600; min-width:180px}
+  .match-row select{flex:1; min-width:220px}
+  .feedback{font-size:.9rem; margin-top:6px; font-weight:600}
+  .feedback.ok{color:var(--ok)}
+  .feedback.bad{color:var(--bad)}
+  .feedback.ok::before{content:"✔ "}
+  .feedback.bad::before{content:"✘ "}
+  .btn-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:8px}
+  button{
+    font:inherit; font-weight:600; cursor:pointer; border:none; border-radius:10px;
+    padding:12px 22px; transition:.15s;
+  }
+  .btn-primary{background:var(--primary); color:#fff}
+  .btn-primary:hover{background:var(--primary-dark)}
+  .btn-ghost{background:#fff; color:var(--primary-dark); border:1px solid var(--primary)}
+  .btn-ghost:hover{background:#eff6ff}
+  .score{
+    position:sticky; bottom:12px; z-index:10;
+    background:#1e293b; color:#fff; border-radius:12px; padding:14px 18px;
+    display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+  }
+  .score .val{font-size:1.3rem; font-weight:700}
+  .score .val.ok{color:#4ade80}
+  .score .val.bad{color:#f87171}
+  .score .msg{font-size:.95rem; opacity:.9}
+  @media (max-width:560px){
+    .match-row .term{min-width:100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Unit 2 — Travel and Transport (B2)</h1>
+  <p>Автопроверка лексики: выберите/введите ответ и нажмите «Проверить»</p>
+</header>
+
+<main>
+
+  <section class="card" id="sec-contrast">
+    <h2><span class="num">1</span> Topic vocabulary in contrast</h2>
+    <p class="hint">Выберите подходящее по смыслу слово.</p>
+
+    <div class="q" data-answer="journey">
+      <div class="prompt">1. The <b>___</b> from London to Edinburgh took five hours by train.</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="voyage"> voyage</label>
+        <label><input type="radio" name="q1" value="journey"> journey</label>
+        <label><input type="radio" name="q1" value="trip"> trip</label>
+        <label><input type="radio" name="q1" value="travel"> travel</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="travel">
+      <div class="prompt">2. Air <b>___</b> has become much cheaper in recent years.</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="voyage"> voyage</label>
+        <label><input type="radio" name="q2" value="journey"> journey</label>
+        <label><input type="radio" name="q2" value="travel"> travel</label>
+        <label><input type="radio" name="q2" value="excursion"> excursion</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="trip">
+      <div class="prompt">3. We're going on a business <b>___</b> to Berlin next week.</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="voyage"> voyage</label>
+        <label><input type="radio" name="q3" value="trip"> trip</label>
+        <label><input type="radio" name="q3" value="travel"> travel</label>
+        <label><input type="radio" name="q3" value="excursion"> excursion</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="excursion">
+      <div class="prompt">4. The hotel offers a day <b>___</b> to the nearby mountains.</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="voyage"> voyage</label>
+        <label><input type="radio" name="q4" value="journey"> journey</label>
+        <label><input type="radio" name="q4" value="excursion"> excursion</label>
+        <label><input type="radio" name="q4" value="travel"> travel</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="fare">
+      <div class="prompt">5. How much is the bus <b>___</b> to the city centre?</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="fare"> fare</label>
+        <label><input type="radio" name="q5" value="ticket"> ticket</label>
+        <label><input type="radio" name="q5" value="fee"> fee</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="sight">
+      <div class="prompt">6. The Eiffel Tower is a famous <b>___</b> in Paris.</div>
+      <div class="options">
+        <label><input type="radio" name="q6" value="view"> view</label>
+        <label><input type="radio" name="q6" value="sight"> sight</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="miss">
+      <div class="prompt">7. Hurry up, or we'll <b>___</b> the train!</div>
+      <div class="options">
+        <label><input type="radio" name="q7" value="miss"> miss</label>
+        <label><input type="radio" name="q7" value="lose"> lose</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="border">
+      <div class="prompt">8. We had to show our passports at the <b>___</b>.</div>
+      <div class="options">
+        <label><input type="radio" name="q8" value="border"> border</label>
+        <label><input type="radio" name="q8" value="edge"> edge</label>
+        <label><input type="radio" name="q8" value="line"> line</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="distance">
+      <div class="prompt">9. What's the <b>___</b> between Moscow and St Petersburg?</div>
+      <div class="options">
+        <label><input type="radio" name="q9" value="length"> length</label>
+        <label><input type="radio" name="q9" value="distance"> distance</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="reach">
+      <div class="prompt">10. We'll <b>___</b> the hotel before midnight.</div>
+      <div class="options">
+        <label><input type="radio" name="q10" value="arrive"> arrive</label>
+        <label><input type="radio" name="q10" value="reach"> reach</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <section class="card" id="sec-phrasal">
+    <h2><span class="num">2</span> Phrasal verbs</h2>
+    <p class="hint">Сопоставьте фразовый глагол с его значением.</p>
+
+    <div class="match-row" data-answer="догнать">
+      <span class="term">catch up with</span>
+      <select>
+        <option value="">— выберите —</option>
+        <option>догнать</option>
+        <option>подвести</option>
+        <option>зарегистрироваться</option>
+        <option>сбить (машиной)</option>
+        <option>вернуться</option>
+        <option>отправиться</option>
+      </select>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="match-row" data-answer="подвести">
+      <span class="term">pick up</span>
+      <select>
+        <option value="">— выберите —</option>
+        <option>догнать</option>
+        <option>подвести</option>
+        <option>зарегистрироваться</option>
+        <option>сбить (машиной)</option>
+        <option>вернуться</option>
+        <option>отправиться</option>
+      </select>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="match-row" data-answer="зарегистрироваться">
+      <span class="term">check in</span>
+      <select>
+        <option value="">— выберите —</option>
+        <option>догнать</option>
+        <option>подвести</option>
+        <option>зарегистрироваться</option>
+        <option>сбить (машиной)</option>
+        <option>вернуться</option>
+        <option>отправиться</option>
+      </select>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="match-row" data-answer="сбить (машиной)">
+      <span class="term">run over</span>
+      <select>
+        <option value="">— выберите —</option>
+        <option>догнать</option>
+        <option>подвести</option>
+        <option>зарегистрироваться</option>
+        <option>сбить (машиной)</option>
+        <option>вернуться</option>
+        <option>отправиться</option>
+      </select>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="match-row" data-answer="вернуться">
+      <span class="term">get back</span>
+      <select>
+        <option value="">— выберите —</option>
+        <option>догнать</option>
+        <option>подвести</option>
+        <option>зарегистрироваться</option>
+        <option>сбить (машиной)</option>
+        <option>вернуться</option>
+        <option>отправиться</option>
+      </select>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="match-row" data-answer="отправиться">
+      <span class="term">set out / off</span>
+      <select>
+        <option value="">— выберите —</option>
+        <option>догнать</option>
+        <option>подвести</option>
+        <option>зарегистрироваться</option>
+        <option>сбить (машиной)</option>
+        <option>вернуться</option>
+        <option>отправиться</option>
+      </select>
+      <span class="feedback"></span>
+    </div>
+  </section>
+
+  <section class="card" id="sec-collocations">
+    <h2><span class="num">3</span> Phrases and collocations</h2>
+    <p class="hint">Впишите пропущенное слово (одно слово, маленькими буквами).</p>
+
+    <div class="q" data-answer="accident">
+      <div class="prompt">1. I had an <b>___</b> on the way to work — luckily nobody was hurt.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="advance">
+      <div class="prompt">2. It's cheaper to book your tickets in <b>___</b>.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="ahead">
+      <div class="prompt">3. Go straight <b>___</b> and then turn left.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="direction">
+      <div class="prompt">4. We drove in the <b>___</b> of the mountains.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="holiday">
+      <div class="prompt">5. We're going on <b>___</b> to Spain next month.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="route">
+      <div class="prompt">6. Let's plan our <b>___</b> before we leave.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="sightseeing">
+      <div class="prompt">7. We spent the whole day <b>___</b> in Rome.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="speed">
+      <div class="prompt">8. The car was moving at a <b>___</b> of 90 km/h.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="tour">
+      <div class="prompt">9. We went on a guided <b>___</b> of the old town.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="way">
+      <div class="prompt">10. I lost my <b>___</b> in the narrow streets of the old city.</div>
+      <input type="text" placeholder="ваш ответ">
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <section class="card" id="sec-patterns">
+    <h2><span class="num">4</span> Word patterns</h2>
+    <p class="hint">Выберите правильную конструкцию.</p>
+
+    <div class="q" data-answer="of">
+      <div class="prompt">1. She is afraid <b>___</b> flying.</div>
+      <div class="options">
+        <label><input type="radio" name="p1" value="of"> of</label>
+        <label><input type="radio" name="p1" value="to"> to</label>
+        <label><input type="radio" name="p1" value="from"> from</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="to do">
+      <div class="prompt">2. They invited us <b>___</b> with them.</div>
+      <div class="options">
+        <label><input type="radio" name="p2" value="do"> do</label>
+        <label><input type="radio" name="p2" value="to do"> to do</label>
+        <label><input type="radio" name="p2" value="doing"> doing</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="in">
+      <div class="prompt">3. We arrived <b>___</b> London at 8 a.m.</div>
+      <div class="options">
+        <label><input type="radio" name="p3" value="in"> in</label>
+        <label><input type="radio" name="p3" value="at"> at</label>
+        <label><input type="radio" name="p3" value="to"> to</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="from">
+      <div class="prompt">4. This tradition differs <b>___</b> the one in my country.</div>
+      <div class="options">
+        <label><input type="radio" name="p4" value="from"> from</label>
+        <label><input type="radio" name="p4" value="of"> of</label>
+        <label><input type="radio" name="p4" value="with"> with</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="about">
+      <div class="prompt">5. I often dream <b>___</b> travelling around the world.</div>
+      <div class="options">
+        <label><input type="radio" name="p5" value="about"> about</label>
+        <label><input type="radio" name="p5" value="of"> of</label>
+        <label><input type="radio" name="p5" value="in"> in</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-answer="to do">
+      <div class="prompt">6. We arranged <b>___</b> the trip together.</div>
+      <div class="options">
+        <label><input type="radio" name="p6" value="do"> do</label>
+        <label><input type="radio" name="p6" value="to do"> to do</label>
+        <label><input type="radio" name="p6" value="doing"> doing</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+  </section>
+
+  <div class="btn-row">
+    <button class="btn-primary" id="checkBtn">Проверить всё</button>
+    <button class="btn-ghost" id="resetBtn">Сбросить</button>
+  </div>
+
+  <div class="score" id="scoreBar">
+    <div>
+      <span>Результат: </span>
+      <span class="val" id="scoreVal">—</span>
+      <span id="scoreMsg" class="msg"></span>
+    </div>
+  </div>
+
+</main>
+
+<script>
+(function(){
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+
+  function norm(s){
+    return (s || '').toString().trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  var mistakeCounts = new WeakMap();
+
+  function getMistakes(el){
+    return mistakeCounts.get(el) || 0;
+  }
+  function incMistakes(el){
+    var n = getMistakes(el) + 1;
+    mistakeCounts.set(el, n);
+    return n;
+  }
+
+  function setFeedback(fbEl, ok, correctText, mistakes){
+    fbEl.classList.remove('ok', 'bad');
+    if(ok){
+      fbEl.textContent = 'Верно';
+      fbEl.classList.add('ok');
+      return;
+    }
+    if(mistakes >= 3){
+      fbEl.textContent = 'Неверно. Правильный ответ: ' + correctText;
+    } else {
+      var left = 3 - mistakes;
+      fbEl.textContent = 'Неверно. Попробуйте ещё раз (до подсказки осталось: ' + left + ').';
+    }
+    fbEl.classList.add('bad');
+  }
+
+  function checkRadioQuestion(qEl){
+    var answer = qEl.getAttribute('data-answer');
+    var checked = qEl.querySelector('input[type=radio]:checked');
+    var fb = qEl.querySelector('.feedback');
+    if(!checked){
+      fb.classList.remove('ok', 'bad');
+      fb.textContent = 'Нет ответа';
+      fb.classList.add('bad');
+      return false;
+    }
+    var ok = norm(checked.value) === norm(answer);
+    var mistakes = ok ? getMistakes(qEl) : incMistakes(qEl);
+    setFeedback(fb, ok, answer, mistakes);
+    return ok;
+  }
+
+  function checkTextQuestion(qEl){
+    var answer = qEl.getAttribute('data-answer');
+    var input = qEl.querySelector('input[type=text]');
+    var fb = qEl.querySelector('.feedback');
+    if(!input.value.trim()){
+      fb.classList.remove('ok', 'bad');
+      fb.textContent = 'Нет ответа';
+      fb.classList.add('bad');
+      return false;
+    }
+    var ok = norm(input.value) === norm(answer);
+    var mistakes = ok ? getMistakes(qEl) : incMistakes(qEl);
+    setFeedback(fb, ok, answer, mistakes);
+    return ok;
+  }
+
+  function checkSelectRow(row){
+    var answer = row.getAttribute('data-answer');
+    var sel = row.querySelector('select');
+    var fb = row.querySelector('.feedback');
+    if(!sel.value){
+      fb.classList.remove('ok', 'bad');
+      fb.textContent = 'Нет ответа';
+      fb.classList.add('bad');
+      return false;
+    }
+    var ok = norm(sel.value) === norm(answer);
+    var mistakes = ok ? getMistakes(row) : incMistakes(row);
+    setFeedback(fb, ok, answer, mistakes);
+    return ok;
+  }
+
+  function checkAll(){
+    var total = 0, correct = 0;
+
+    $$('#sec-contrast .q').forEach(function(q){ total++; if(checkRadioQuestion(q)) correct++; });
+    $$('#sec-phrasal .match-row').forEach(function(r){ total++; if(checkSelectRow(r)) correct++; });
+    $$('#sec-collocations .q').forEach(function(q){ total++; if(checkTextQuestion(q)) correct++; });
+    $$('#sec-patterns .q').forEach(function(q){ total++; if(checkRadioQuestion(q)) correct++; });
+
+    var val = $('#scoreVal');
+    var msg = $('#scoreMsg');
+    val.textContent = correct + ' / ' + total;
+    val.classList.remove('ok', 'bad');
+
+    var pct = total ? Math.round(correct / total * 100) : 0;
+    if(pct === 100){
+      val.classList.add('ok');
+      msg.textContent = 'Отлично! Всё верно!';
+    } else if(pct >= 70){
+      val.classList.add('ok');
+      msg.textContent = '(' + pct + '%) Хороший результат.';
+    } else {
+      val.classList.add('bad');
+      msg.textContent = '(' + pct + '%) Повторите материал и попробуйте снова.';
+    }
+  }
+
+  function resetAll(){
+    $$('input[type=radio]').forEach(function(i){ i.checked = false; });
+    $$('input[type=text]').forEach(function(i){ i.value = ''; });
+    $$('#sec-phrasal select').forEach(function(s){ s.value = ''; });
+    $$('.feedback').forEach(function(f){ f.textContent = ''; f.classList.remove('ok', 'bad'); });
+    $$('.q, .match-row').forEach(function(el){ mistakeCounts.delete(el); });
+    var val = $('#scoreVal');
+    val.textContent = '—';
+    val.classList.remove('ok', 'bad');
+    $('#scoreMsg').textContent = '';
+  }
+
+  $('#checkBtn').addEventListener('click', checkAll);
+  $('#resetBtn').addEventListener('click', resetAll);
+
+  $$('#sec-collocations input[type=text]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ e.preventDefault(); checkAll(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
